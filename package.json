@@ -1,0 +1,30 @@
+{
+  "name": "node-zigbee",
+  "version": "0.0.0",
+  "description": "ZigBee for Node.JS (using the TI CC2530/CC2531)",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ninjablocks/node-zigbee.git"
+  },
+  "keywords": [
+    "zigbee",
+    "zigbee-ha",
+    "zll",
+    "cc2531",
+    "cc2530"
+  ],
+  "author": "Ninja Blocks <help@ninjablocks.com> (http://www.ninjablocks.com)",
+  "contributors": [
+    "Theo Julienne <theo@ninjablocks.com>",
+    "Elliot Shepherd <elliot@ninjablocks.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ninjablocks/node-zigbee/issues"
+  },
+  "homepage": "https://github.com/ninjablocks/node-zigbee"
+}
