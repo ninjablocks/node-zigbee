@@ -32,7 +32,7 @@ function connect(path) {
 					version.specifics.majorRelease, version.specifics.minorRelease,
 					version.specifics.maintenanceRelease);
 			})
-			/*/ reset our device so we get back to a clean state
+			//*/ reset our device so we get back to a clean state
 			.then(function() {
 				return zigbeeClient.resetDevice(true);
 			})//*/
