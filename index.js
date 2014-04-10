@@ -10,12 +10,12 @@ var Client = require('./lib/client/Client').Client;
  * @return {promise} A promise that resolves to a new Client once connected.
  */
 module.exports.connectNetworkProcessor = function(serialPortPath) {
-	var mt = new MonitorTestSerial();
+  var mt = new MonitorTestSerial();
 
-	return mt.connectToPort(serialPortPath)
-		.then(function(mt) {
-			var client = new Client(mt);
+  return mt.connectToPort(serialPortPath)
+    .then(function(mt) {
+      var client = new Client(mt);
 
-			return client;
-		});
+      return client;
+    });
 };
