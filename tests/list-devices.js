@@ -1,8 +1,8 @@
 'use strict';
 
 var ZCLClient = require('../lib/zcl/ZCLClient');
-
 var client = new ZCLClient();
+var _ = require('underscore');
 
 var glob = require('glob');
 
@@ -43,9 +43,32 @@ glob('{/dev/tty.zigbee,/dev/cu.usbmodem*}', function (err, devices) {
               console.log('Found', endpoint.toString());
 
               endpoint.inClusters().then(function(clusters) {
+
                 clusters.forEach(function(cluster) {
                   console.log('Found', cluster.toString());
                 });
+
+                var colorCluster = _.findWhere(clusters, {name: 'Color Control'});
+                var onOffCluster = _.findWhere(clusters, {name: 'On/Off'});
+
+                if (colorCluster) {
+
+                  console.log('Alternating colours', colorCluster.toString());
+                  setInterval(function() {
+                    setColor(colorCluster, '#FF0000').delay(1500).then(function() {
+                      setColor(colorCluster, '#0000FF');
+                    });
+                  }, 3000);
+
+                } else if (onOffCluster) {
+
+                  console.log('Toggling', onOffCluster.toString());
+                  setInterval(function() {
+                    onOffCluster.commands.Toggle().done();
+                  }, 3000);
+
+                }
+
               });
 
             });
@@ -58,4 +81,22 @@ glob('{/dev/tty.zigbee,/dev/cu.usbmodem*}', function (err, devices) {
     })
     .done();
 });
+
+
+
+var colorspaces = require('colorspaces');
+var Color = require('color');
+var Concentrate = require('concentrate');
+
+function setColor(cluster, hex) {
+
+  var color = colorspaces.make_color('hex', hex).as('CIExyY');
+
+  var payload = Concentrate();
+  payload.uint16le(Math.floor(color[0] * 0xFFFF)); // Color X
+  payload.uint16le(Math.floor(color[1] * 0xFFFF)); // Color Y
+  payload.uint16le(3); // Transition duration (1/10th seconds)
+
+  return cluster.commands['Move to Color'](payload.result());
+}
 
