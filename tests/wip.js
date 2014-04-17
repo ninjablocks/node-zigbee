@@ -23,54 +23,60 @@ glob('/dev/cu.usbmodem*', function (err, devices) {
 
 function connect(path) {
 
-  zigbee
-    .connectNetworkProcessor(path)
-    .then(function(zigbeeClient) {
-      // Display some version information
-      return zigbeeClient.firmwareVersion().then(function(version) {
-        console.log('Firmware version: %s %d.%d.%d', version.type,
-          version.specifics.majorRelease, version.specifics.minorRelease,
-          version.specifics.maintenanceRelease);
-      })
-      //*/ reset our device so we get back to a clean state
-      .then(function() {
-        return zigbeeClient.resetDevice(true);
-      })//*/
-      // and now initiate our coordinator
-      .then(function() {
-        console.log('ZigBee device ready, setting up as coordinator');
-        return zigbeeClient.startCoordinator();
-      })
-      //.delay(15000)
-      /*// Disable automatic permit join on the coordinator
-      .then(function() {
-        return zigbeeClient.permitJoin(0, 0);
-      })//*/
-      // now find existing devices and print them out
-      .then(function() {
+  var client = zigbee.createClient();
 
-      //setTimeout(function() {
-        //var reset = new ResetHue(zigbeeClient);
-        //reset.findHues();
-      //}, 15000);*/
+  client.connectToPort(path)
+    .then(client.firmwareVersion.bind(client))
+    .then(function(version) {
 
-  //    zigbeeClient.permitJoin(128);
+      var versionString = [
+        version.specifics.majorRelease,
+        version.specifics.minorRelease,
+        version.specifics.maintenanceRelease
+      ].join('.');
+
+      console.log('CC2530/1 firmware version: %s %s', version.type, versionString);
+
+        /*/ reset our device so we get back to a clean state
+        .then(function() {
+          client.resetDevice(true);
+        })//*/
+
+    })
+    .then(client.startCoordinator.bind(client))
+    .then(function() {
+
+    //setTimeout(function() {
+      //var reset = new ResetHue(zigbeeClient);
+      //reset.findHues();
+    //}, 15000);*/
+
+//    zigbeeClient.permitJoin(128);
 //return;
-        displayZigBeeDevices(zigbeeClient);
+      displayZigBeeDevices(client);
 
-        zigbeeClient.devices().then(function(devices) {
-          devices.forEach(function(device) {
-            handleDevice(device);
-          });
-        });
+      var seen = {};
 
-        zigbeeClient.on('device_announce', function(device) {
-          console.log('Got new ZigBee device:', device.IEEEAddress);
-
-          displayZigBeeDevices(zigbeeClient);
-          handleDevice(device);
+      client.devices().then(function(devices) {
+        devices.forEach(function(device) {
+          
+          setInterval(function() {
+            if (!seen[device.IEEEAddress]) {
+              seen[device.IEEEAddress] = true;
+              handleDevice(device);
+            }
+          }, 5000);
+          
+          
         });
       });
+
+      /*zigbeeClient.on('device_announce', function(device) {
+        console.log('Got new ZigBee device:', device.IEEEAddress);
+
+        displayZigBeeDevices(zigbeeClient);
+        handleDevice(device);
+      });*/
     })
     .catch(function(err) {
       console.log('ZigBee client failed:', err.stack);

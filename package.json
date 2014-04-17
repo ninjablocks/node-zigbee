@@ -1,6 +1,6 @@
 {
   "name": "zigbee",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ZigBee for Node.JS (using the TI CC2530/CC2531)",
   "main": "index.js",
   "scripts": {
@@ -41,6 +41,8 @@
     "underscore": "1.6.0",
     "log4js": "0.6.12",
     "xml2js": "0.4.2",
-    "color": "0.5.0"
+    "color": "0.5.0",
+    "pakkit": "0.0.1",
+    "colorspaces": "^0.1.4"
   }
 }
