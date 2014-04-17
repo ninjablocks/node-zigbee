@@ -6,7 +6,7 @@ var client = new ZCLClient();
 
 var glob = require('glob');
 
-glob('/dev/cu.usbmodem*', function (err, devices) {
+glob('{/dev/tty.zigbee,/dev/cu.usbmodem*}', function (err, devices) {
   // TODO: Support the CC2530 on the Sphere.
   if (err || devices.length != 1) {
     //throw new Error('Found ' + devices.length + ' devices that could be the CC2531 usb dongle.');
