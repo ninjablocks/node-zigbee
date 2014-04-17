@@ -38,10 +38,19 @@ glob('{/dev/tty.zigbee,/dev/cu.usbmodem*}', function (err, devices) {
             }
             seen[device.IEEEAddress] = true;
 
-            console.log('-- Found device', device);
+            console.log('Found', device.toString());
             device.on('endpoint', function(endpoint) {
-              console.log('-- Found endpoint', endpoint.toString());
+              console.log('Found', endpoint.toString());
+
+              endpoint.inClusters().then(function(clusters) {
+                clusters.forEach(function(cluster) {
+                  console.log('Found', cluster.toString());
+                });
+              });
+
             });
+            device.findActiveEndpoints();
+            device.findEndpoints(0x0104, [0x0500], [0x0500]); // HA IAS Zones.
           });
         });
       }, 5000);
