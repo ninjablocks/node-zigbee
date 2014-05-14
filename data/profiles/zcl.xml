@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<clusters>
-    <data-types>
+<zcl>
+    <datatypes>
         <datatype id="0x00" name="nodata" description="No data" length="0"/>
         <datatype id="0x08" name="data8" description="8-bit data" length="1"/>
         <datatype id="0x09" name="data16" description="16-bit data" length="2"/>
@@ -56,471 +56,473 @@
         <datatype id="0xea" name="oid" description="BACnet OID" length="4" invalid="0xffffffff"/>
         <datatype id="0xf0" name="ieee" description="IEEE address" length="8" invalid="0xffffffffffffffff"/>
         <datatype id="0xf1" name="seckey" description="128-bit security key" length="16"/>
-    </data-types>
-
-    <!-- General functional domain -->
-    <cluster id="0x0000" name="Basic">
-        <!-- General Attribute Set -->
-        <attribute id="0x0000" name="ZCLVersion" type="uint8" default="0x00">
-            <Range from="0x00" to="0xFF"/>
-		</attribute>
-        <attribute id="0x0001" name="ApplicationVersion" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xFF"/>
-        </attribute>
-        <attribute id="0x0002" name="StackVersion" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xFF"/>
-        </attribute>
-        <attribute id="0x0003" name="HWVersion" type="uint8" access="r" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xFF"/>
-        </attribute>
-        <attribute id="0x0004" name="ManufacturerName" type="string" default="0x00" mandatory="false">
-            <Range from="0" to="32"/>
-        </attribute>
-        <attribute id="0x0005" name="ModelIdentifier" type="string" mandatory="false">
-            <Range from="0" to="32"/>
-        </attribute>
-        <attribute id="0x0006" name="DateCode" type="string" mandatory="false">
-            <Range from="0" to="32"/>
-        </attribute>
-        <attribute id="0x0007" name="PowerSource" type="enum8" mandatory="false">
-            <Range from="0x00" to="0xFF"/>
-        </attribute>
-
-        <!-- Basic Device Settings -->
-        <!-- <attribute id="0x0010" name="LocationDescription" type="string" access="rw" mandatory="false">
-            <Range from="0" to="16"/>
-        </attribute> -->
-        <attribute id="0x0011" name="PhysicalEnvironment" type="enum8" access="rw" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xFF"/>
-        </attribute>
-        <attribute id="0x0012" name="DeviceEnabled" type="boolean" access="rw" default="true" mandatory="false">
-            <Range from="0x00" to="0xFF"/>
-        </attribute>
-        <attribute id="0x0013" name="AlarmMask" type="bitmap8" access="rw" default="0x00" mandatory="false">
-            <Range from="0x00" to="0x03"/>
-        </attribute>
-    </cluster>
-
-    <!-- End Basic Cluster -->
-
-    <cluster id="0x0001" name="Power Configuration"/>
-
-    <cluster id="0x0002" name="Device Temperature Configuration">
-        <!-- Device Temperature Information Attribute Set -->
-        <attribute id="0x0000" name="CurrentTemperature" type="int16" >
-            <Range from="-200" to="200"/>
-        </attribute>
-        <attribute id="0x0001" name="MinTempExperienced" type="int16" mandatory="false">
-            <Range from="-200" to="200"/>
-        </attribute>
-        <attribute id="0x0003" name="MaxTempExperienced" type="int16" mandatory="false">
-            <Range from="-200" to="200"/>
-        </attribute>
-        <attribute id="0x0004" name="OverTempTotalDwell" type="uint16" default="0" mandatory="false">
-            <Range from="0x0000" to="0xFFFF"/>
-        </attribute>
-
-        <!-- Device Temperature Settings Attribute Set -->
-        <attribute id="0x0010" name="DeviceTempAlarmMask" type="bitmap8" access="rw" default="0" mandatory="false">
-            <Range from="0x00" to="0x03"/>
-        </attribute>
-        <attribute id="0x0011" name="LowTempThreshold" type="int16" access="rw" mandatory="false">
-            <Range from="-200" to="200"/>
-        </attribute>
-        <attribute id="0x0011" name="HighTempThreshold" type="int16" access="rw" mandatory="false">
-            <Range from="-200" to="200"/>
-        </attribute>
-        <attribute id="0x0011" name="LowTempDwellTripPoint" type="uint24" access="rw" mandatory="false">
-            <Range from="0x000000" to="0xFFFFFF"/>
-        </attribute>
-        <attribute id="0x0011" name="HighTempDwellTripPoint" type="uint24" access="rw" mandatory="false">
-            <Range from="0x000000" to="0xFFFFFF"/>
-        </attribute>
-    </cluster>
-
-    <cluster id="0x0003" name="Identify"/>
-
-    <cluster id="0x0004" name="Groups"/>
-    <cluster id="0x0005" name="Scenes"/>
-
-    <cluster id="0x0006" name="On/Off">
-        <attribute id="0x0000" name="OnOff" type="boolean" access="r" default="0x00" mandatory="true" />
-
-        <command id="0x00" name="Off" mandatory="true"/>
-        <command id="0x01" name="On" mandatory="true"/>
-        <command id="0x02" name="Toggle" mandatory="true"/>
-    </cluster>
-
-    <cluster id="0x0007" name="On/Off Switch Configuration">
-        <attribute id="0x0000" name="SwitchType" type="enum">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-        <attribute id="0x0010" name="SwitchActions" type="enum8" access="rw" default="0x00">
-            <Range from="0x00" to="0x02"/>
-        </attribute>
-    </cluster>
-
-    <!--  Cluster fully Specified -->
-    <cluster id="0x0008" name="Level Control">
-        <attribute id="0x0000" name="CurrentLevel" type="uint8" default="0x00" >
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-        <attribute id="0x0001" name="RemainingTime" type="uint16" default="0x0000" mandatory="false">
-            <Range from="0x0000" to="0xffff"/>
-        </attribute>
-
-        <attribute id="0x0010" name="OnOffTransitionTime" type="uint16" default="0x0000" mandatory="false">
-            <Range from="0x0000" to="0xffff"/>
-        </attribute>
-
-        <attribute id="0x0011" name="OnLevel" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-        <command id="0x00" name="Move to Level">
-        	<param name="Level" type="uint8"/>
-        	<param name="TransitionTime" type="uint16"/>
-        </command>
-        <command id="0x01" name="Move">
-			<param name="MoveMode" type="enum8">
-				<value id="0x00" name="Up"/>
-				<value id="0x01" name="Down"/>
-			</param>
-        	<param name="Rate" type="uint8"/>
-        </command>
-        <command id="0x02" name="Step">
-			<param name="StepMode" type="enum8">
-				<value id="0x00" name="Up"/>
-				<value id="0x01" name="Down"/>
-			</param>
-        	<param name="StepSize" type="uint8"/>
-        	<param name="TransitionTime" type="uint16"/>
-        </command>
-        <command id="0x03" name="Stop"/>
-
-        <command id="0x04" name="Move to Level (with On/Off)">
-        	<param name="Level" type="uint8"/>
-        	<param name="TransitionTime" type="uint16"/>
-        </command>
-
-        <command id="0x05" name="Move (with On/Off)">
-			<param name="MoveMode" type="enum8">
-				<value id="0x00" name="Up"/>
-				<value id="0x01" name="Down"/>
-			</param>
-        	<param name="Rate" type="uint8"/>
-        </command>
-        <command id="0x06" name="Step (with On/Off)">
-			<param name="StepMode" type="enum8">
-				<value id="0x00" name="Up"/>
-				<value id="0x01" name="Down"/>
-			</param>
-        	<param name="StepSize" type="uint8"/>
-        	<param name="TransitionTime" type="uint16"/>
-        </command>
-        <command id="0x07" name="Stop (with On/Off)"/>
-    </cluster>
-
-
-    <cluster id="0x0009" name="Alarms"/>
-    <cluster id="0x000A" name="Time"/>
-    <cluster id="0x000B" name="RSSI Location"/>
-
-    <cluster id="0x0015" name="Commissioning">
-        <command id="0x00" name="Restart Device"/>
-        <command id="0x01" name="Save Startup Parameters"/>
-        <command id="0x02" name="Restore Startup Parameters"/>
-        <command id="0x03" name="Reset Startup Parameters"/>
-    </cluster>
-
-    <cluster id="0x0702" name="Simple Metering">
-
-    	<!-- Reading Information Attribute Set -->
-        <attribute id="0x0000" name="CurrentSummationDelivered" type="uint48" >
-            <Range from="0x000000000000" to="0xffffffffffff"/>
-        </attribute>
-        <attribute id="0x0006" name="PowerFactor" type="int8" default="0x00" mandatory="false">
-            <Range from="-100" to="100"/>
-        </attribute>
-
-		<!-- Meter Status Attribute Set -->
-        <attribute id="0x0200" name="Status" type="bitmap8" default="0x00">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-		<!-- Formatting Attribute Set -->
-        <attribute id="0x0300" name="UnitOfMeasure" type="enum8" default="0x00">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-       	<attribute id="0x0303" name="SummationFormatting" type="bitmap8" >
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-       	<attribute id="0x0304" name="DemandFormatting" type="bitmap8" mandatory="false" >
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-       	<attribute id="0x0306" name="MeteringDeviceType" type="bitmap8" >
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-        <!-- Simple Metering Cluster - ESP Historical Consumption Attribute Set -->
-       	<attribute id="0x0400" name="IstantaneousDemand" type="int24" default="0x000000" >
-            <Range from="0x000000" to="0xffffff"/>
-        </attribute>
-
-    </cluster>
-
-    <cluster id="0x000C" name="Simple Metering 4Noks">
-        <attribute id="0x0000" name="Power" type="int32" access="r" uom="W">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-        <attribute id="0x0001" name="Energy" type="int32" factor="10" uom="Wh">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-        <attribute id="0x0002" name="TimeValue" type="int32" uom="s">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-    </cluster>
-
-    <!-- Closures functional domain -->
-    <cluster id="0100" name="Shade Configuration"/>
-
-    <!-- HVAC functional domain -->
-    <cluster id="0x0200" name="Pump Configuration and Control"/>
-    <cluster id="0x0201" name="Thermostat"/>
-    <cluster id="0x0202" name="Fan Control"/>
-    <cluster id="0x0203" name="Dehumidification Control"/>
-    <cluster id="0x0204" name="Thermostat User Interface Configuration"/>
-
-    <!-- Lighting functional domain -->
-    <cluster id="0x0300" name="Color Control">
-        <command id="0x07" name="Move to Color"/>
-
-        <attribute id="0x0000" name="CurrentHue"/>
-        <attribute id="0x0001" name="CurrentSaturation"/>
-        <attribute id="0x0002" name="RemainingTime"/>
-    </cluster>
-
-    <cluster id="0x0301" name="Ballast Configuration"/>
-
-    <!-- Measurement and Sensing functional domain -->
-    <cluster id="0x0400" name="Illuminance measurement">
-        <attribute id="0x0000" name="MeasuredValue" type="uint16" default="0" factor="0.01" uom="^C">
-        </attribute>
-        <attribute id="0x0001" name="MinMeasuredValue" type="uint16" factor="0.1" uom="^C">
-            <Range from="0x0002" to="0xfffd"/>
-        </attribute>
-        <attribute id="0x0002" name="MaxMeasuredValue" type="uint16" factor="0.1" uom="^C">
-            <Range from="0x0001" to="0xfffe"/>
-        </attribute>
-        <attribute id="0x0003" name="Tolerance" type="uint16" mandatory="false">
-            <Range from="0x0000" to="0x0800"/>
-        </attribute>
-        <attribute id="0x0004" name="LightSensorType" type="enum8" mandatory="false">
-            <Range from="0x00" to="0xff"/>
-            <!--
-                0x00 Photodiode
-                0x01 CMOS
-                0x02 – 0x3f Reserved
-                0x40 – 0xfe Reserved for manufacturer specific light sensor types
-                0xff Unknown
-            -->
-        </attribute>
-
-    </cluster>
-
-    <cluster id="0x0401" name="Illuminance level sensing"/>
-
-    <cluster id="0x0402" name="Temperature Measurement">
-        <!-- Temperature Measurement Information Attribute Set -->
-        <attribute id="0x0000" name="MeasuredValue" type="int16" default="0" factor="0.01" uom="^C">
-        </attribute>
-        <attribute id="0x0001" name="MinMeasuredValue" type="int16" factor="0.1" uom="^C">
-            <Range from="0x954d" to="0x7ffe"/>
-        </attribute>
-        <attribute id="0x0003" name="MaxMeasuredValue" type="int16" factor="0.1" uom="^C">
-            <Range from="0x954e" to="0x7fff"/>
-        </attribute>
-        <attribute id="0x0004" name="Tolerance" type="uint16" mandatory="false">
-            <Range from="0x0000" to="0x0800"/>
-        </attribute>
-    </cluster>
-
-    <cluster id="0x0403" name="Pressure measurement"/>
-    <cluster id="0x0404" name="Flow measurement"/>
-    <cluster id="0x0405" name="Relative humidity measurement"/>
-    <cluster id="0x0406" name="Occupancy sensing">
-
-        <!-- 4.8.2.2.1 Occupancy Sensor Information Set -->
-        <attribute id="0x0000" name="Occupancy" type="boolean" access="r" reportable="true"/> <!-- Actually bitmap8, but all values > 1 are reserved -->
-        <attribute id="0x0001" name="OccupancySensorType" type="enum8" access="r">
-            <variable id="0x00" name="PIR"/>
-            <variable id="0x00" name="Ultrasonic"/>
-            <variable id="0x00" name="PIR and ultrasonic"/>
-        </attribute>
-
-        <!-- 4.8.2.2.2 PIR Configuration Set -->
-        <attribute id="0x0010" name="PIROccupiedToUnoccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
-            <Range from="0x0000" to="0xfffe"/>
-        </attribute>
-        <attribute id="0x0011" name="PIRUnoccupiedToOccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
-            <Range from="0x0000" to="0xfffe"/>
-        </attribute>
-        <attribute id="0x0012" name="PIRUnoccupiedToOccupiedThreshold" type="uint8" default="0x01" mandatory="false" access="rw">
-            <Range from="0x01" to="0xfe"/>
-        </attribute>
-
-        <!-- 4.8.2.2.3 Ultrasonic Configuration Set -->
-        <attribute id="0x0010" name="UltrasonicOccupiedToUnoccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
-            <Range from="0x0000" to="0xfffe"/>
-        </attribute>
-        <attribute id="0x0011" name="UltrasonicUnoccupiedToOccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
-            <Range from="0x0000" to="0xfffe"/>
-        </attribute>
-        <attribute id="0x0012" name="UltrasonicUnoccupiedToOccupiedThreshold" type="uint8" default="0x01" mandatory="false" access="rw">
-            <Range from="0x01" to="0xfe"/>
-        </attribute>
-
-    </cluster>
-
-    <!-- Security and Sefety functional domain -->
-    <cluster id="0x0500" name="IAS Zone">
-        <!-- 8.2.2.2.1 Zone Information Attribute Set -->
-        <attribute id="0x0000" name="ZoneState" type="enum8" access="r" default="0x00" reportable="true" mandatory="true"/>
-        <attribute id="0x0001" name="ZoneType" type="enum16" access="r" mandatory="true"/>
-        <attribute id="0x0002" name="ZoneStatus" type="bmp16" access="r" default="0x00" reportable="true" mandatory="true"/>
-
-    </cluster>
-
-    <cluster id="0x0501" name="IAS ACE"/>
-    <cluster id="0x0502" name="IAS WD"/>
-    <cluster id="0x0503" name="IAS WD"/>
-
-    <cluster id="0x0A01" name="Appliance Control">
-        <!-- Appliance Status Attribute Set -->
-        <attribute id="0x0000" name="ApplianceStatus" type="enum8" default="0x00">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-        <attribute id="0x0001" name="RemoteEnableFlags" type="uint8" >
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-        <attribute id="0x0002" name="ApplianceStatus2" type="uint24" default="0x000000" mandatory="false">
-            <Range from="0x000000" to="0xffffff"/>
-        </attribute>
-
-        <!-- Appliance Functions Attribute Set -->
-        <attribute id="0x0100" name="CycleTarget0" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-         <attribute id="0x0101" name="CycleTarget1" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-         <attribute id="0x0102" name="TemperatureTarget0" type="int16" default="0x0000" mandatory="false">
-            <Range from="-50" to="+350"/>
-        </attribute>
-         <attribute id="0x0103" name="TemperatureTarget1" type="int16" default="0x0000" mandatory="false">
-            <Range from="-50" to="+350"/>
-        </attribute>
-        <attribute id="0x0104" name="AutomaticDryingSetPoint" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x000000" to="0xffffff"/>
-        </attribute>
-         <attribute id="0x0105" name="TimedDryingSetPoint" type="uint8" default="0x00" mandatory="false">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-          <attribute id="0x0106" name="Spin" type="uint16" default="0x0000" mandatory="false">
-            <Range from="0x0000" to="0xFFFF"/>
-        </attribute>
-        <attribute id="0x0109" name="CycleDuration" type="uint16" default="0x0000" mandatory="false">
-            <Range from="0x0000" to="0xFFFF"/>
-        </attribute>
-
-        <attribute id="0x010a" name="SuperCoolMode" type="boolean" default="0x00" mandatory="false">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-
-        <attribute id="0x010b" name="SuperFreezeMode" type="boolean" default="0x00" mandatory="false">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-
-        <attribute id="0x010c" name="NormalMode" type="boolean" default="0x01" mandatory="false">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-
-        <attribute id="0x010d" name="EcoMode" type="boolean" default="0x00" mandatory="false">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-
-        <attribute id="0x010e" name="HolidayMode" type="boolean" default="0x00" mandatory="false">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-
-        <attribute id="0x010f" name="FabricSetPoint" type="uint8" access="r" default="0x00" mandatory="false">
-            <Range from="0x00" to="0x01"/>
-        </attribute>
-
-        <!-- Appliance Warnings and Faults Attribute Set -->
-        <attribute id="0x0010" name="ApplianceWarnings" type="enum16" default="0x0000">
-            <Range from="0x0000" to="0xffff"/>
-        </attribute>
-        <attribute id="0x0011" name="ApplianceFaults" type="uint8" default="0x0000">
-            <Range from="0x00" to="0xff"/>
-        </attribute>
-
-        <command id="0x00" name="CommandExecution">
-            <payload>
-                <field name="CommandId" type="enum"/>
-            </payload>
-        </command>
-
-        <command id="0x01" name="SignalState"/>
-    </cluster>
-
-    <cluster id="0x0A00" name="Appliance Identification">
-        <!-- Appliance Identification Attribute Set -->
-        <attribute id="0x0000" name="BasicIdentification" type="octects" size="7" >
-  		</attribute>
-        <command id="0x00" name="GetApplianceIdentification"/>
-    </cluster>
-
-    <cluster id="0x0FF2" name="Indesit Bridge">
-        <!-- Digital Basic Frame Transmission -->
-        <command id="0x93" name="DBFT"/>
-
-        <!-- Digital Extended Frame Transmission -->
-        <command id="0x95" name="DEFT"/>
-
-        <!-- Digital Extended Frame Transmission Without Answer -->
-        <command id="0x9d" name="DEFTWA"/>
-    </cluster>
-
-    <cluster id="0x1000" name="ZLL Commissioning">
-        <!-- Requests other devices (potential nodes) in the local neighbourhood to respond. A scan request is first performed on channel 11, up to five times until a response is received. If no response is received, a scan request is then performed once on each of channels 15, 20 and 25, and then the remaining channels (12, 13, 14, 16, etc) until a response is detected. -->
-        <command id="0x00" name="Scan Request"/>
-
-        <!-- Requests information about the devices on a remote node -->
-        <command id="0x02" name="Device Information Request"/>
-
-        <!-- Requests a remote node to physically identify itself (e.g. visually by flashing a LED) -->
-        <command id="0x06" name="Identify Request"/>
-
-        <!-- Requests a factory reset of a remote node -->
-        <command id="0x07" name="Reset To Factory New Request"/>
-
-        <!-- Requests a new network to be created comprising the initiator and a detected Router -->
-        <command id="0x10" name="Network Start Request"/>
-
-        <!-- Requests a Router to join the network -->
-        <command id="0x12" name="Network Join Router Request"/>
-
-        <!-- Requests an End Device to join the network -->
-        <command id="0x14" name="Network Join End Device Request"/>
-
-        <!-- Requests an update of the network settings on a remote node (if the supplied Network Update Identifier is more recent than the one on the node) -->
-        <command id="0x16" name="Network Update Request"/>
-    </cluster>
-
-</clusters>
+    </datatypes>
+
+    <clusters>
+        <!-- General functional domain -->
+        <cluster id="0x0000" name="Basic">
+            <!-- General Attribute Set -->
+            <attribute id="0x0000" name="ZCLVersion" type="uint8" default="0x00">
+                <Range from="0x00" to="0xFF"/>
+    		</attribute>
+            <attribute id="0x0001" name="ApplicationVersion" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xFF"/>
+            </attribute>
+            <attribute id="0x0002" name="StackVersion" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xFF"/>
+            </attribute>
+            <attribute id="0x0003" name="HWVersion" type="uint8" access="r" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xFF"/>
+            </attribute>
+            <attribute id="0x0004" name="ManufacturerName" type="string" default="0x00" mandatory="false">
+                <Range from="0" to="32"/>
+            </attribute>
+            <attribute id="0x0005" name="ModelIdentifier" type="string" mandatory="false">
+                <Range from="0" to="32"/>
+            </attribute>
+            <attribute id="0x0006" name="DateCode" type="string" mandatory="false">
+                <Range from="0" to="32"/>
+            </attribute>
+            <attribute id="0x0007" name="PowerSource" type="enum8" mandatory="false">
+                <Range from="0x00" to="0xFF"/>
+            </attribute>
+
+            <!-- Basic Device Settings -->
+            <!-- <attribute id="0x0010" name="LocationDescription" type="string" access="rw" mandatory="false">
+                <Range from="0" to="16"/>
+            </attribute> -->
+            <attribute id="0x0011" name="PhysicalEnvironment" type="enum8" access="rw" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xFF"/>
+            </attribute>
+            <attribute id="0x0012" name="DeviceEnabled" type="boolean" access="rw" default="true" mandatory="false">
+                <Range from="0x00" to="0xFF"/>
+            </attribute>
+            <attribute id="0x0013" name="AlarmMask" type="bitmap8" access="rw" default="0x00" mandatory="false">
+                <Range from="0x00" to="0x03"/>
+            </attribute>
+        </cluster>
+
+        <!-- End Basic Cluster -->
+
+        <cluster id="0x0001" name="Power Configuration"/>
+
+        <cluster id="0x0002" name="Device Temperature Configuration">
+            <!-- Device Temperature Information Attribute Set -->
+            <attribute id="0x0000" name="CurrentTemperature" type="int16" >
+                <Range from="-200" to="200"/>
+            </attribute>
+            <attribute id="0x0001" name="MinTempExperienced" type="int16" mandatory="false">
+                <Range from="-200" to="200"/>
+            </attribute>
+            <attribute id="0x0003" name="MaxTempExperienced" type="int16" mandatory="false">
+                <Range from="-200" to="200"/>
+            </attribute>
+            <attribute id="0x0004" name="OverTempTotalDwell" type="uint16" default="0" mandatory="false">
+                <Range from="0x0000" to="0xFFFF"/>
+            </attribute>
+
+            <!-- Device Temperature Settings Attribute Set -->
+            <attribute id="0x0010" name="DeviceTempAlarmMask" type="bitmap8" access="rw" default="0" mandatory="false">
+                <Range from="0x00" to="0x03"/>
+            </attribute>
+            <attribute id="0x0011" name="LowTempThreshold" type="int16" access="rw" mandatory="false">
+                <Range from="-200" to="200"/>
+            </attribute>
+            <attribute id="0x0011" name="HighTempThreshold" type="int16" access="rw" mandatory="false">
+                <Range from="-200" to="200"/>
+            </attribute>
+            <attribute id="0x0011" name="LowTempDwellTripPoint" type="uint24" access="rw" mandatory="false">
+                <Range from="0x000000" to="0xFFFFFF"/>
+            </attribute>
+            <attribute id="0x0011" name="HighTempDwellTripPoint" type="uint24" access="rw" mandatory="false">
+                <Range from="0x000000" to="0xFFFFFF"/>
+            </attribute>
+        </cluster>
+
+        <cluster id="0x0003" name="Identify"/>
+
+        <cluster id="0x0004" name="Groups"/>
+        <cluster id="0x0005" name="Scenes"/>
+
+        <cluster id="0x0006" name="On/Off">
+            <attribute id="0x0000" name="OnOff" type="boolean" access="r" default="0x00" mandatory="true" />
+
+            <command id="0x00" name="Off" mandatory="true"/>
+            <command id="0x01" name="On" mandatory="true"/>
+            <command id="0x02" name="Toggle" mandatory="true"/>
+        </cluster>
+
+        <cluster id="0x0007" name="On/Off Switch Configuration">
+            <attribute id="0x0000" name="SwitchType" type="enum">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+            <attribute id="0x0010" name="SwitchActions" type="enum8" access="rw" default="0x00">
+                <Range from="0x00" to="0x02"/>
+            </attribute>
+        </cluster>
+
+        <!--  Cluster fully Specified -->
+        <cluster id="0x0008" name="Level Control">
+            <attribute id="0x0000" name="CurrentLevel" type="uint8" default="0x00" >
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+            <attribute id="0x0001" name="RemainingTime" type="uint16" default="0x0000" mandatory="false">
+                <Range from="0x0000" to="0xffff"/>
+            </attribute>
+
+            <attribute id="0x0010" name="OnOffTransitionTime" type="uint16" default="0x0000" mandatory="false">
+                <Range from="0x0000" to="0xffff"/>
+            </attribute>
+
+            <attribute id="0x0011" name="OnLevel" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+            <command id="0x00" name="Move to Level">
+            	<param name="Level" type="uint8"/>
+            	<param name="TransitionTime" type="uint16"/>
+            </command>
+            <command id="0x01" name="Move">
+    			<param name="MoveMode" type="enum8">
+    				<value id="0x00" name="Up"/>
+    				<value id="0x01" name="Down"/>
+    			</param>
+            	<param name="Rate" type="uint8"/>
+            </command>
+            <command id="0x02" name="Step">
+    			<param name="StepMode" type="enum8">
+    				<value id="0x00" name="Up"/>
+    				<value id="0x01" name="Down"/>
+    			</param>
+            	<param name="StepSize" type="uint8"/>
+            	<param name="TransitionTime" type="uint16"/>
+            </command>
+            <command id="0x03" name="Stop"/>
+
+            <command id="0x04" name="Move to Level (with On/Off)">
+            	<param name="Level" type="uint8"/>
+            	<param name="TransitionTime" type="uint16"/>
+            </command>
+
+            <command id="0x05" name="Move (with On/Off)">
+    			<param name="MoveMode" type="enum8">
+    				<value id="0x00" name="Up"/>
+    				<value id="0x01" name="Down"/>
+    			</param>
+            	<param name="Rate" type="uint8"/>
+            </command>
+            <command id="0x06" name="Step (with On/Off)">
+    			<param name="StepMode" type="enum8">
+    				<value id="0x00" name="Up"/>
+    				<value id="0x01" name="Down"/>
+    			</param>
+            	<param name="StepSize" type="uint8"/>
+            	<param name="TransitionTime" type="uint16"/>
+            </command>
+            <command id="0x07" name="Stop (with On/Off)"/>
+        </cluster>
+
+
+        <cluster id="0x0009" name="Alarms"/>
+        <cluster id="0x000A" name="Time"/>
+        <cluster id="0x000B" name="RSSI Location"/>
+
+        <cluster id="0x0015" name="Commissioning">
+            <command id="0x00" name="Restart Device"/>
+            <command id="0x01" name="Save Startup Parameters"/>
+            <command id="0x02" name="Restore Startup Parameters"/>
+            <command id="0x03" name="Reset Startup Parameters"/>
+        </cluster>
+
+        <cluster id="0x0702" name="Simple Metering">
+
+        	<!-- Reading Information Attribute Set -->
+            <attribute id="0x0000" name="CurrentSummationDelivered" type="uint48" >
+                <Range from="0x000000000000" to="0xffffffffffff"/>
+            </attribute>
+            <attribute id="0x0006" name="PowerFactor" type="int8" default="0x00" mandatory="false">
+                <Range from="-100" to="100"/>
+            </attribute>
+
+    		<!-- Meter Status Attribute Set -->
+            <attribute id="0x0200" name="Status" type="bitmap8" default="0x00">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+    		<!-- Formatting Attribute Set -->
+            <attribute id="0x0300" name="UnitOfMeasure" type="enum8" default="0x00">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+           	<attribute id="0x0303" name="SummationFormatting" type="bitmap8" >
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+           	<attribute id="0x0304" name="DemandFormatting" type="bitmap8" mandatory="false" >
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+           	<attribute id="0x0306" name="MeteringDeviceType" type="bitmap8" >
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+            <!-- Simple Metering Cluster - ESP Historical Consumption Attribute Set -->
+           	<attribute id="0x0400" name="InstantaneousDemand" type="int24" default="0x000000" >
+                <Range from="0x000000" to="0xffffff"/>
+            </attribute>
+
+        </cluster>
+
+        <cluster id="0x000C" name="Simple Metering 4Noks">
+            <attribute id="0x0000" name="Power" type="int32" access="r" uom="W">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+            <attribute id="0x0001" name="Energy" type="int32" factor="10" uom="Wh">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+            <attribute id="0x0002" name="TimeValue" type="int32" uom="s">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+        </cluster>
+
+        <!-- Closures functional domain -->
+        <cluster id="0100" name="Shade Configuration"/>
+
+        <!-- HVAC functional domain -->
+        <cluster id="0x0200" name="Pump Configuration and Control"/>
+        <cluster id="0x0201" name="Thermostat"/>
+        <cluster id="0x0202" name="Fan Control"/>
+        <cluster id="0x0203" name="Dehumidification Control"/>
+        <cluster id="0x0204" name="Thermostat User Interface Configuration"/>
+
+        <!-- Lighting functional domain -->
+        <cluster id="0x0300" name="Color Control">
+            <command id="0x07" name="Move to Color"/>
+
+            <attribute id="0x0000" name="CurrentHue"/>
+            <attribute id="0x0001" name="CurrentSaturation"/>
+            <attribute id="0x0002" name="RemainingTime"/>
+        </cluster>
+
+        <cluster id="0x0301" name="Ballast Configuration"/>
+
+        <!-- Measurement and Sensing functional domain -->
+        <cluster id="0x0400" name="Illuminance measurement">
+            <attribute id="0x0000" name="MeasuredValue" type="uint16" default="0" factor="0.01" uom="^C">
+            </attribute>
+            <attribute id="0x0001" name="MinMeasuredValue" type="uint16" factor="0.1" uom="^C">
+                <Range from="0x0002" to="0xfffd"/>
+            </attribute>
+            <attribute id="0x0002" name="MaxMeasuredValue" type="uint16" factor="0.1" uom="^C">
+                <Range from="0x0001" to="0xfffe"/>
+            </attribute>
+            <attribute id="0x0003" name="Tolerance" type="uint16" mandatory="false">
+                <Range from="0x0000" to="0x0800"/>
+            </attribute>
+            <attribute id="0x0004" name="LightSensorType" type="enum8" mandatory="false">
+                <Range from="0x00" to="0xff"/>
+                <!--
+                    0x00 Photodiode
+                    0x01 CMOS
+                    0x02 – 0x3f Reserved
+                    0x40 – 0xfe Reserved for manufacturer specific light sensor types
+                    0xff Unknown
+                -->
+            </attribute>
+
+        </cluster>
+
+        <cluster id="0x0401" name="Illuminance level sensing"/>
+
+        <cluster id="0x0402" name="Temperature Measurement">
+            <!-- Temperature Measurement Information Attribute Set -->
+            <attribute id="0x0000" name="MeasuredValue" type="int16" default="0" factor="0.01" uom="^C">
+            </attribute>
+            <attribute id="0x0001" name="MinMeasuredValue" type="int16" factor="0.1" uom="^C">
+                <Range from="0x954d" to="0x7ffe"/>
+            </attribute>
+            <attribute id="0x0003" name="MaxMeasuredValue" type="int16" factor="0.1" uom="^C">
+                <Range from="0x954e" to="0x7fff"/>
+            </attribute>
+            <attribute id="0x0004" name="Tolerance" type="uint16" mandatory="false">
+                <Range from="0x0000" to="0x0800"/>
+            </attribute>
+        </cluster>
+
+        <cluster id="0x0403" name="Pressure measurement"/>
+        <cluster id="0x0404" name="Flow measurement"/>
+        <cluster id="0x0405" name="Relative humidity measurement"/>
+        <cluster id="0x0406" name="Occupancy sensing">
+
+            <!-- 4.8.2.2.1 Occupancy Sensor Information Set -->
+            <attribute id="0x0000" name="Occupancy" type="boolean" access="r" reportable="true"/> <!-- Actually bitmap8, but all values > 1 are reserved -->
+            <attribute id="0x0001" name="OccupancySensorType" type="enum8" access="r">
+                <variable id="0x00" name="PIR"/>
+                <variable id="0x00" name="Ultrasonic"/>
+                <variable id="0x00" name="PIR and ultrasonic"/>
+            </attribute>
+
+            <!-- 4.8.2.2.2 PIR Configuration Set -->
+            <attribute id="0x0010" name="PIROccupiedToUnoccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
+                <Range from="0x0000" to="0xfffe"/>
+            </attribute>
+            <attribute id="0x0011" name="PIRUnoccupiedToOccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
+                <Range from="0x0000" to="0xfffe"/>
+            </attribute>
+            <attribute id="0x0012" name="PIRUnoccupiedToOccupiedThreshold" type="uint8" default="0x01" mandatory="false" access="rw">
+                <Range from="0x01" to="0xfe"/>
+            </attribute>
+
+            <!-- 4.8.2.2.3 Ultrasonic Configuration Set -->
+            <attribute id="0x0010" name="UltrasonicOccupiedToUnoccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
+                <Range from="0x0000" to="0xfffe"/>
+            </attribute>
+            <attribute id="0x0011" name="UltrasonicUnoccupiedToOccupiedDelay" type="uint16" default="0x0000" mandatory="false" access="rw">
+                <Range from="0x0000" to="0xfffe"/>
+            </attribute>
+            <attribute id="0x0012" name="UltrasonicUnoccupiedToOccupiedThreshold" type="uint8" default="0x01" mandatory="false" access="rw">
+                <Range from="0x01" to="0xfe"/>
+            </attribute>
+
+        </cluster>
+
+        <!-- Security and Sefety functional domain -->
+        <cluster id="0x0500" name="IAS Zone">
+            <!-- 8.2.2.2.1 Zone Information Attribute Set -->
+            <attribute id="0x0000" name="ZoneState" type="enum8" access="r" default="0x00" reportable="true" mandatory="true"/>
+            <attribute id="0x0001" name="ZoneType" type="enum16" access="r" mandatory="true"/>
+            <attribute id="0x0002" name="ZoneStatus" type="bmp16" access="r" default="0x00" reportable="true" mandatory="true"/>
+
+        </cluster>
+
+        <cluster id="0x0501" name="IAS ACE"/>
+        <cluster id="0x0502" name="IAS WD"/>
+        <cluster id="0x0503" name="IAS WD"/>
+
+        <cluster id="0x0A01" name="Appliance Control">
+            <!-- Appliance Status Attribute Set -->
+            <attribute id="0x0000" name="ApplianceStatus" type="enum8" default="0x00">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+            <attribute id="0x0001" name="RemoteEnableFlags" type="uint8" >
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+            <attribute id="0x0002" name="ApplianceStatus2" type="uint24" default="0x000000" mandatory="false">
+                <Range from="0x000000" to="0xffffff"/>
+            </attribute>
+
+            <!-- Appliance Functions Attribute Set -->
+            <attribute id="0x0100" name="CycleTarget0" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+             <attribute id="0x0101" name="CycleTarget1" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+             <attribute id="0x0102" name="TemperatureTarget0" type="int16" default="0x0000" mandatory="false">
+                <Range from="-50" to="+350"/>
+            </attribute>
+             <attribute id="0x0103" name="TemperatureTarget1" type="int16" default="0x0000" mandatory="false">
+                <Range from="-50" to="+350"/>
+            </attribute>
+            <attribute id="0x0104" name="AutomaticDryingSetPoint" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x000000" to="0xffffff"/>
+            </attribute>
+             <attribute id="0x0105" name="TimedDryingSetPoint" type="uint8" default="0x00" mandatory="false">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+              <attribute id="0x0106" name="Spin" type="uint16" default="0x0000" mandatory="false">
+                <Range from="0x0000" to="0xFFFF"/>
+            </attribute>
+            <attribute id="0x0109" name="CycleDuration" type="uint16" default="0x0000" mandatory="false">
+                <Range from="0x0000" to="0xFFFF"/>
+            </attribute>
+
+            <attribute id="0x010a" name="SuperCoolMode" type="boolean" default="0x00" mandatory="false">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+
+            <attribute id="0x010b" name="SuperFreezeMode" type="boolean" default="0x00" mandatory="false">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+
+            <attribute id="0x010c" name="NormalMode" type="boolean" default="0x01" mandatory="false">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+
+            <attribute id="0x010d" name="EcoMode" type="boolean" default="0x00" mandatory="false">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+
+            <attribute id="0x010e" name="HolidayMode" type="boolean" default="0x00" mandatory="false">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+
+            <attribute id="0x010f" name="FabricSetPoint" type="uint8" access="r" default="0x00" mandatory="false">
+                <Range from="0x00" to="0x01"/>
+            </attribute>
+
+            <!-- Appliance Warnings and Faults Attribute Set -->
+            <attribute id="0x0010" name="ApplianceWarnings" type="enum16" default="0x0000">
+                <Range from="0x0000" to="0xffff"/>
+            </attribute>
+            <attribute id="0x0011" name="ApplianceFaults" type="uint8" default="0x0000">
+                <Range from="0x00" to="0xff"/>
+            </attribute>
+
+            <command id="0x00" name="CommandExecution">
+                <payload>
+                    <field name="CommandId" type="enum"/>
+                </payload>
+            </command>
+
+            <command id="0x01" name="SignalState"/>
+        </cluster>
+
+        <cluster id="0x0A00" name="Appliance Identification">
+            <!-- Appliance Identification Attribute Set -->
+            <attribute id="0x0000" name="BasicIdentification" type="octects" size="7" >
+      		</attribute>
+            <command id="0x00" name="GetApplianceIdentification"/>
+        </cluster>
+
+        <cluster id="0x0FF2" name="Indesit Bridge">
+            <!-- Digital Basic Frame Transmission -->
+            <command id="0x93" name="DBFT"/>
+
+            <!-- Digital Extended Frame Transmission -->
+            <command id="0x95" name="DEFT"/>
+
+            <!-- Digital Extended Frame Transmission Without Answer -->
+            <command id="0x9d" name="DEFTWA"/>
+        </cluster>
+
+        <cluster id="0x1000" name="ZLL Commissioning">
+            <!-- Requests other devices (potential nodes) in the local neighbourhood to respond. A scan request is first performed on channel 11, up to five times until a response is received. If no response is received, a scan request is then performed once on each of channels 15, 20 and 25, and then the remaining channels (12, 13, 14, 16, etc) until a response is detected. -->
+            <command id="0x00" name="Scan Request"/>
+
+            <!-- Requests information about the devices on a remote node -->
+            <command id="0x02" name="Device Information Request"/>
+
+            <!-- Requests a remote node to physically identify itself (e.g. visually by flashing a LED) -->
+            <command id="0x06" name="Identify Request"/>
+
+            <!-- Requests a factory reset of a remote node -->
+            <command id="0x07" name="Reset To Factory New Request"/>
+
+            <!-- Requests a new network to be created comprising the initiator and a detected Router -->
+            <command id="0x10" name="Network Start Request"/>
+
+            <!-- Requests a Router to join the network -->
+            <command id="0x12" name="Network Join Router Request"/>
+
+            <!-- Requests an End Device to join the network -->
+            <command id="0x14" name="Network Join End Device Request"/>
+
+            <!-- Requests an update of the network settings on a remote node (if the supplied Network Update Identifier is more recent than the one on the node) -->
+            <command id="0x16" name="Network Update Request"/>
+        </cluster>
+    </clusters>
+
+</zcl>
